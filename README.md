@@ -31,7 +31,7 @@ This repo contains intentionally broken CI/CD workflows and code to test:
 
 Point your GitHub webhook to:
 ```
-https://your-agent-domain.com/webhook
+https://ci-cd-fixer-agent-backend.onrender.com/webhook
 ```
 
 Event types: `workflow_run`, `push`, `pull_request`

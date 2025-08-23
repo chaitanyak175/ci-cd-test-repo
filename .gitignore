@@ -1,0 +1,41 @@
+# Git Configuration for Test Repository
+# This file ensures proper Git handling
+
+# Ignore common files
+node_modules/
+*.log
+.env
+.env.local
+.env.production
+.DS_Store
+*.pyc
+__pycache__/
+.pytest_cache/
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+Thumbs.db
+.Trash-*
+
+# Docker
+.docker/
+docker-compose.override.yml
+
+# Database
+*.db
+*.sqlite3
+
+# Secrets (important for testing secret detection)
+secrets.json
+config/secrets.yaml
+.secrets/

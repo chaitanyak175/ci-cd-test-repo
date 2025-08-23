@@ -1,0 +1,48 @@
+# Intentionally broken docker-compose.yml
+# Multiple configuration issues
+
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=${DATABASE_URL}  # Missing environment variable
+      - SECRET_KEY=${SECRET_KEY}      # Missing environment variable
+    depends_on:
+      - database
+      - nonexistent-service  # Service doesn't exist
+    volumes:
+      - ./src:/app/src
+      - missing-volume:/app/data  # Volume not defined
+    
+  database:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=testdb
+      - POSTGRES_USER=user
+      # Missing POSTGRES_PASSWORD - will cause error
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    # Missing restart policy, can cause issues
+    
+  web:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf  # File doesn't exist
+    depends_on:
+      - app
+
+# Missing volumes section for postgres_data
+# This will cause docker-compose to fail

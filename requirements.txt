@@ -1,0 +1,30 @@
+# Test requirements with issues
+# Some packages don't exist or have version conflicts
+
+# Missing version specifications
+requests
+flask
+psycopg2
+
+# Non-existent packages
+nonexistent-package==1.0.0
+fake-module>=2.0.0
+
+# Version conflicts
+Django==3.2.0
+django-extensions==4.0.0  # Might not be compatible
+
+# Packages with known security issues (old versions)
+Pillow==8.0.0  # Old version with vulnerabilities
+urllib3==1.25.0  # Old version
+
+# Missing dependencies for other packages
+celery  # Needs redis or rabbitmq
+gunicorn  # For web server
+
+# Invalid package names
+invalid package name
+another_invalid-package!
+
+# Package that requires system dependencies
+psycopg2-binary  # Might conflict with psycopg2 above

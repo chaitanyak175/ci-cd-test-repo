@@ -1,0 +1,37 @@
+name: 🔴 Broken Docker Build
+# This workflow has Docker-related failures
+
+on:
+  push:
+    paths:
+      - 'Dockerfile'
+      - 'docker-compose.yml'
+  workflow_dispatch:
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Build Docker image
+      run: |
+        # Dockerfile doesn't exist or has syntax errors
+        docker build -t test-app .
+        
+    - name: Run Docker container
+      run: |
+        # This will fail because the build failed
+        docker run --rm test-app
+        
+    - name: Docker Compose
+      run: |
+        # docker-compose.yml has issues
+        docker-compose up -d
+        docker-compose down
+        
+    - name: Push to registry
+      run: |
+        # Missing authentication and image doesn't exist
+        docker push username/test-app:latest

@@ -1,0 +1,45 @@
+name: 🔴 Broken Python CI
+# This workflow has multiple Python-related issues
+
+on:
+  push:
+    paths:
+      - '**/*.py'
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+        
+    - name: Install dependencies
+      run: |
+        # requirements.txt doesn't exist yet
+        pip install -r requirements.txt
+        
+    - name: Run Python tests
+      run: |
+        # pytest not installed, no tests exist
+        python -m pytest tests/
+        
+    - name: Type checking
+      run: |
+        # mypy not installed
+        mypy src/
+        
+    - name: Code formatting check
+      run: |
+        # black not installed
+        black --check src/
+        
+    - name: Import non-existent module
+      run: |
+        # This will fail with ImportError
+        python -c "import nonexistent_module; print('This will fail')"

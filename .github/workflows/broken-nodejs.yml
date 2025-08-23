@@ -1,0 +1,45 @@
+name: 🔴 Broken Node.js CI
+# This workflow is intentionally broken to test the CI/CD Fixer Agent
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        
+    - name: Install dependencies
+      run: |
+        # Missing package.json will cause failure
+        npm install
+        
+    - name: Run tests
+      run: |
+        # This will fail because there's no test script
+        npm test
+        
+    - name: Build project
+      run: |
+        # This will fail because there's no build script
+        npm run build
+        
+    - name: Use missing environment variable
+      run: |
+        # This will fail because SECRET_KEY is not defined
+        echo "Using secret: $SECRET_KEY"
+        
+    - name: Run linting
+      run: |
+        # This will fail because eslint is not installed
+        npx eslint src/

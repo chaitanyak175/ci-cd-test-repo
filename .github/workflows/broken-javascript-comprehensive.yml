@@ -1,0 +1,198 @@
+name: 🔴 Broken JavaScript/Node.js CI
+# This workflow has multiple Node.js and JavaScript-related issues
+
+on:
+  push:
+    paths:
+      - '**/*.js'
+      - '**/*.json'
+      - '**/*.ts'
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [14, 16, 18, 20]  # Testing multiple versions
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'  # Will fail if package-lock.json doesn't exist
+    
+    - name: Install dependencies
+      run: |
+        # package.json might have missing or conflicting dependencies
+        npm ci  # Will fail if package-lock.json is missing
+    
+    - name: Run ESLint
+      run: |
+        # ESLint not configured or installed
+        npx eslint src/ tests/
+        
+    - name: Run Prettier check
+      run: |
+        # Prettier not installed
+        npx prettier --check src/ tests/
+    
+    - name: Type checking with TypeScript
+      run: |
+        # TypeScript not installed, no tsconfig.json
+        npx tsc --noEmit
+    
+    - name: Run Jest tests
+      run: |
+        # Jest not configured, test files may have syntax errors
+        npm test
+        
+    - name: Run security audit
+      run: |
+        # Will find vulnerabilities in dependencies
+        npm audit --audit-level high
+        
+    - name: Check for unused dependencies
+      run: |
+        # depcheck not installed
+        npx depcheck
+        
+    - name: Bundle size analysis
+      run: |
+        # webpack-bundle-analyzer not installed
+        npx webpack-bundle-analyzer dist/bundle.js --no-open
+        
+    - name: Run with deprecated packages
+      run: |
+        # Using deprecated request package
+        node -e "const request = require('request'); console.log('Using deprecated package');"
+        
+    - name: Memory leak test
+      run: |
+        # This will reveal memory leaks in the application
+        node --expose-gc src/database_manager.js
+        
+    - name: Performance benchmarks
+      run: |
+        # No benchmark tools installed
+        npx clinic doctor -- node src/database_manager.js
+
+  security-scan:
+    runs-on: ubuntu-latest
+    needs: lint-and-test
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+    
+    - name: Install Snyk
+      run: npm install -g snyk
+      
+    - name: Run Snyk security scan
+      run: |
+        # Will find security vulnerabilities
+        snyk test --all-projects
+        
+    - name: Run OWASP dependency check
+      run: |
+        # dependency-check not installed
+        dependency-check --project "Test App" --scan .
+        
+    - name: Check for secrets
+      run: |
+        # truffleHog not installed
+        truffleHog --regex --entropy=False .
+
+  docker-build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Build Docker image
+      run: |
+        # Dockerfile might have security issues
+        docker build -t test-app .
+        
+    - name: Run Docker security scan
+      run: |
+        # trivy not installed
+        trivy image test-app
+        
+    - name: Check Dockerfile best practices
+      run: |
+        # hadolint not installed
+        hadolint Dockerfile
+
+  performance-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+    
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Run load tests
+      run: |
+        # artillery not installed
+        npx artillery run loadtest.yml
+        
+    - name: Memory usage analysis
+      run: |
+        # clinic.js not installed
+        npx clinic bubbleprof -- node src/database_manager.js
+        
+    - name: CPU profiling
+      run: |
+        # 0x not installed
+        npx 0x src/database_manager.js
+
+  code-quality:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+    
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Run SonarQube analysis
+      run: |
+        # sonar-scanner not installed
+        sonar-scanner
+        
+    - name: Complexity analysis
+      run: |
+        # complexity-report not installed
+        npx complexity-report src/
+        
+    - name: Dead code detection
+      run: |
+        # unimported not installed
+        npx unimported
+        
+    - name: License compliance check
+      run: |
+        # license-checker not installed
+        npx license-checker --summary

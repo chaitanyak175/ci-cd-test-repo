@@ -1,13 +1,38 @@
-# Test requirements with issues
-# Some packages don't exist or have version conflicts
+# Python dependencies for the broken test application
+# Some dependencies are missing or have security vulnerabilities
 
-# Missing version specifications
-requests
-flask
-psycopg2
+requests==2.28.1
+flask==2.0.0  # Outdated version with security vulnerabilities
+# numpy missing - will cause import errors in data_processor.py
+# pandas missing - will cause import errors in data_processor.py
+pytest==7.1.3
+# Missing test dependencies: pytest-cov, pytest-mock
+# Missing security tools: bandit, safety
+# Missing linting tools: flake8, black, isort, mypy, pylint
+# Missing profiling tools: memory-profiler, line-profiler
+# Missing database: psycopg2-binary
+# Missing web scraping: beautifulsoup4, lxml, selenium
+click==8.0.0  # Dependency that might have vulnerabilities
+jinja2==3.0.0  # Old version with potential security issues
 
-# Non-existent packages
+# Non-existent packages that will cause installation failures
 nonexistent-package==1.0.0
+another-fake-package==2.1.0
+
+# Conflicting versions
+urllib3==1.26.0  # Might conflict with requests
+certifi==2020.6.20  # Old version
+
+# Packages with known vulnerabilities
+pyyaml==5.4.0  # Has known security issues
+pillow==8.3.0  # Outdated with security vulnerabilities
+
+# Missing but required packages for the source files:
+# - numpy (required by data_processor.py)
+# - pandas (required by data_processor.py) 
+# - beautifulsoup4 (would improve web_scraper.py)
+# - lxml (for better HTML parsing)
+# - psycopg2-binary (for database connections)
 fake-module>=2.0.0
 
 # Version conflicts

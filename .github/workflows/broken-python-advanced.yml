@@ -3,12 +3,9 @@ name: 🔴 Broken Python Advanced CI
 
 on:
   push:
-    paths:
-      - '**/*.py'
-      - 'requirements.txt'
-      - 'setup.py'
-      - 'pyproject.toml'
+    branches: [ main, master ]
   pull_request:
+    branches: [ main, master ]
   workflow_dispatch:
 
 env:

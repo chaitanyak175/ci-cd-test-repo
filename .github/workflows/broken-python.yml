@@ -3,8 +3,9 @@ name: 🔴 Broken Python CI
 
 on:
   push:
-    paths:
-      - '**/*.py'
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
   workflow_dispatch:
 
 jobs:

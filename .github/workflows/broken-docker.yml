@@ -3,9 +3,9 @@ name: 🔴 Broken Docker Build
 
 on:
   push:
-    paths:
-      - 'Dockerfile'
-      - 'docker-compose.yml'
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
   workflow_dispatch:
 
 jobs:

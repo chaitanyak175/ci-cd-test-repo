@@ -2,6 +2,10 @@
 
 This repository contains **intentionally broken** code and CI/CD configurations designed to thoroughly test the **CI/CD Fixer Agent**. It includes various types of failures across multiple programming languages and scenarios.
 
+**🔗 Related Production System:**
+- **Backend API**: https://ci-cd-fixer-agent-backend.onrender.com
+- **Frontend Dashboard**: https://frontend-3dvq.onrender.com/
+
 ## 🎯 Purpose
 
 This test repository demonstrates the CI/CD Fixer Agent's capabilities by providing:
